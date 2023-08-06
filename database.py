@@ -36,3 +36,15 @@ def if_exists(username):
     if result:
         return True
     return False
+
+def auth(username,hashed_pass):
+    conn = sqlite3.connect("users.db")
+    curr = conn.cursor()
+    
+    curr.execute("SELECT * FROM users WHERE username=? AND password",(username,hashed_pass))
+    result = curr.fetchone()
+    conn.close()
+    
+    if result:
+        return True
+    return False
