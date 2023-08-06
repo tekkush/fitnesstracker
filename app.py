@@ -24,10 +24,19 @@ def validate_pass(password):
     return True
 
 def register(username,password):
-    while database.if_exists(username):
+    while database.username_exists(username):
         print(f"username: {username} already taken")
         username = input("please type in another username: ")
     while not validate_pass(password):
         password = input("please input a valid password: ")
-    hashed_password = hashlib.sha256(password)
-    database.add_user(username,password)
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    database.add_user(username,hashed_password)
+
+def login(username,password):
+    conn = sqlite3.connect("users.db")
+    curr = conn.cursor()
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    logged_in = False
+    if database.auth(username,hashed_password):
+        return True
+    return False
