@@ -1,4 +1,5 @@
 import database
+import fitness_db
 import sqlite3
 import hashlib
 

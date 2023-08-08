@@ -1,5 +1,12 @@
 import sqlite3
 
+"""
+Database script for:
+storing user authentication info
+authenticating users 
+viewing all user authentication info
+"""
+
 def create_table():
     # create a table if one does not exist already
     conn = sqlite3.connect("users.db")
