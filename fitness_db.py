@@ -1,6 +1,6 @@
 import sqlite3
 import database
-import datetime
+
 
 def create_table():
     # create a table if one does not exist already

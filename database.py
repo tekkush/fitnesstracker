@@ -38,7 +38,7 @@ def if_exists(username):
     # check if a username is already taken
     conn = sqlite3.connect("users.db")
     curr = conn.cursor()
-    curr.execute("SELECT FROM users WHERE username = ?", (username))
+    curr.execute("SELECT * FROM users WHERE username = ?", (username,))
     result = curr.fetchone()
     if result:
         return True
