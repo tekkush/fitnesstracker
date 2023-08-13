@@ -6,11 +6,31 @@ import datetime
 
 
 
+def validate_pass(password):
+    special = ['$','#','&','^','%']
+    if len(password)<8 or len(password) > 20:
+        print("password must be of length greater than 8 and not exceeding 20 characters")
+        return False
+    if not any(char.isdigit() for char in password):
+        print("Password should have atleast one numeral")
+        return False
+    if not any(char.isupper() for char in password):
+        print("Password must contain atleast one uppercase letter")
+        return False
+    if not any(char.islower() for char in password):
+        print("Password must contain atleast one lower case character")
+        return False
+    if not any(char in special for char in password):
+        print("Password must contain atleast one special character")
+        return False
+    return True
 
 def register(username,password):
-    while database.if_exists(username):
+    while database.username_exists(username):
         print(f"username: {username} already taken")
         username = input("please type in another username: ")
+    while not validate_pass(password):
+        password = input("please input a valid password: ")
     hashed_password = hashlib.sha256(password.encode()).hexdigest()
     database.add_user(username,hashed_password)
 
@@ -27,12 +47,4 @@ def log(username,calories,weight):
 
 
 database.create_table()
-mock_data = [
-    {"username": "alice", "password": "secretpassword"},
-    {"username": "bob", "password": "bobspassword"},
-    {"username": "charlie", "password": "charliespassword"},
-    # Add more mock user data here
-]
-for data in mock_data:
-    register(data["username"],data["password"])
-database.show_all()
+fitness_db.create_table()
