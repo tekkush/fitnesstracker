@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime
 
 
 def create_table():
@@ -11,7 +12,8 @@ def create_table():
     conn.close()
 
 
-def add_record(username,exercise,sets,reps):
+def add_record(username,date,exercise,sets,reps):
+    current_date = datetime.now().date()
     conn = sqlite3.connect("workout.db")
     curr = conn.cursor()
 
@@ -26,4 +28,6 @@ def return_workout(username,date):
     curr.execute("SELECT * FROM workouts WHERE username=? AND date=?",(username,date))
     result = curr.fetchall()
     return result
+
+def update_workout(username,date)
 
