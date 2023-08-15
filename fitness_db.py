@@ -8,15 +8,15 @@ def create_table():
     conn = sqlite3.connect("fitness.db")
     curr = conn.cursor()
 
-    curr.execute("CREATE TABLE IF NOT EXISTS fitness (username TEXT,date DATE,calories INT,carbs INT,protein INT,fats INT,weight REAL)")
+    curr.execute("CREATE TABLE IF NOT EXISTS fitness (username TEXT,date DATE,calories INT,carbs INT,protein INT,fats INT)")
     conn.commit()
     conn.close()
 
-def add_record(username,date,calories,carbs,protein,fats,weight):
+def add_record(username,date,calories,carbs,protein,fats):
     conn = sqlite3.connect("fitness.db")
     curr = conn.cursor()
 
-    curr.execute("INSERT INTO fitness VALUES (?,?,?,?,?,?,?)",(username,date,calories,carbs,protein,fats,weight))
+    curr.execute("INSERT INTO fitness VALUES (?,?,?,?,?,?)",(username,date,calories,carbs,protein,fats))
     conn.commit()
     conn.close()
 
@@ -41,24 +41,10 @@ def return_total(username,date):
 
 
 
-def average_weight(username,days):
-    # calculates a users average weight over the given parameter days
 
-    totals = [] #storing the total for each day 
-    conn = sqlite3.connect("fitness.db")
-    curr = conn.cursor()
-
-    curr.execute("SELECT * FROM fitness WHERE username=? ORDER BY id DESC LIMIT ?", (username,days))
-    result = curr.fetchall()
-    if result:
-        for record in result:
-           total += record[4]
-        return (total/days)
-    else:
-        return -1
+    
     
 def average_calories(username,days):
-    totals = [] #storing total calories for each day
     current_date = datetime.now().date()
     end_date = current_date
     start_date = current_date - timedelta(days=days - 1)
@@ -77,3 +63,23 @@ def average_calories(username,days):
     conn.close()
     average_calories = sum_calories/records
     return average_calories
+
+def average_carbs(username,days):
+    current_date = datetime.now().date()
+    end_date = current_date
+    start_date = current_date - timedelta(days=days - 1)
+
+    conn = sqlite3.connect("fitness.db")
+    curr = conn.cursor()
+
+    curr.execute("SELECT SUM(carbs) FROM fitness WHERE username=? AND date BETWEEN ? AND ?", (username,start_date,end_date))
+    sum_carbs = curr.fetchone()[0]
+
+    curr.execute("SELECT COUNT(calories) FROM fitness WHERE username=? AND date BETWEEN ? AND ?",(username,start_date,end_date))
+    records = curr.fetchone()[0]
+    if records == 0:
+        return -1
+    conn.commit()
+    conn.close()
+    average_carbs = sum_carbs/records
+    return average_carbs
