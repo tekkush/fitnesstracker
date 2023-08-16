@@ -41,10 +41,12 @@ def login(username,password):
         return True
     return False
 
-def log(username,calories,weight):
-    current_date = datetime.now().date()
-    fitness_db.add_record(username,current_date,calories,weight)
+def validate_workout(exercise,sets,reps):
+    if len(exercise) == 0:
+        return -1
+    if sets < 0:
+        return -2
+    if reps < 0:
+        return -3
 
-
-database.create_table()
-fitness_db.create_table()
+          
