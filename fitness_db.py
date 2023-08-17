@@ -157,6 +157,41 @@ def return_weight(username,date):
     weight = result[0]
     return weight
 
+def return_sleep(username,date):
+    """
+    function return_weight
+    takes two parameters username (string) and date(date)
+    returns user sleep_hours on the given date or -1 if no record for user_health can be found on that date
+    """
+    conn = sqlite3.connect("fitness.db")
+    curr = conn.cursor()
+
+    curr.execute("SELECT sleep_hours FROM user_health WHERE username=? AND date=?",(username,date))
+    result = curr.fetchone()
+    if not result:
+        return -1
+    sleep_hours = result[0]
+    return sleep_hours
+
+def avg_weight(username,days):
+    """
+    
+    """
+    current_date = datetime.now().date()
+    end_date = current_date
+    start_date = current_date - timedelta(days=days - 1)
+
+    conn = sqlite3.connect("fitness.db")
+    curr = conn.cursor()
+
+    curr.execute("SELECT SUM(weight) FROM user_health WHERE username=? AND date BETWEEN ? AND ?",(username,start_date,end_date))
+    total_weight = curr.fetchone()
+    curr.execute("SELECT COUNT(weight) FROM user_health WHERE username=? AND date BETWEEN ? AND ?",(username,start_date,end_date))
+    records = curr.fetchone()
+    if records == 0:
+        return -1
+    return(total_weight/records)
+
 def clear_table():
     conn = sqlite3.connect("fitness.db")
     curr = conn.cursor()
