@@ -31,6 +31,9 @@ def add_fitness(username,date,calories,carbs,protein,fats):
     conn.close()
 
 def add_health(username,date,weight,sleep_hours):
+    """
+
+    """
     conn = sqlite3.connect("fitness.db")
     curr = conn.cursor()
 
@@ -39,6 +42,9 @@ def add_health(username,date,weight,sleep_hours):
     conn.close()
 
 def return_total(username,date):
+    """
+
+    """
     conn = sqlite3.connect("fitness.db")
     curr = conn.cursor()
 
@@ -57,6 +63,9 @@ def return_total(username,date):
     return([total_cal,total_carb,total_protein,total_fat])
      
 def average_calories(username,days):
+    """
+    
+    """
     current_date = datetime.now().date()
     end_date = current_date
     start_date = current_date - timedelta(days=days - 1)
@@ -77,6 +86,9 @@ def average_calories(username,days):
     return average_calories
 
 def average_carbs(username,days):
+    """
+    
+    """
     if days == 0:
         return -2 
     current_date = datetime.now().date()
@@ -99,6 +111,9 @@ def average_carbs(username,days):
     return average_carbs
 
 def average_protein(username,days):
+    """
+    
+    """
     current_date = datetime.now().date()
     end_date = current_date
     start_date = current_date - timedelta(days=days - 1)
@@ -119,6 +134,9 @@ def average_protein(username,days):
     return average_protein
 
 def average_fats(username,days):
+    """
+    
+    """
     current_date = datetime.now().date()
     end_date = current_date
     start_date = current_date - timedelta(days=days - 1)
@@ -139,6 +157,9 @@ def average_fats(username,days):
     return average_protein
 
 def all_fitness_averages(username,days):
+    """
+    
+    """
     return( [average_calories(username,days) , average_carbs(username,days) , average_protein(username,days), average_fats(username,days)] )
 
 def return_weight(username,date):
@@ -175,7 +196,9 @@ def return_sleep(username,date):
 
 def avg_weight(username,days):
     """
-    
+    function avg_weight 
+    takes parameters username(string) and days(int)
+    returns user average weight
     """
     current_date = datetime.now().date()
     end_date = current_date
@@ -192,7 +215,30 @@ def avg_weight(username,days):
         return -1
     return(total_weight/records)
 
+def avg_sleep(username,days):
+    """
+    function avg_sleep 
+    takes parameters username(string) and days(int)
+    returns user average sleep hours
+    """
+    current_date = datetime.now().date()
+    end_date = current_date
+    start_date = current_date - timedelta(days=days - 1)
+
+    conn = sqlite3.connect("fitness.db")
+    curr = conn.cursor()
+
+    curr.execute("SELECT SUM(sleep_hours) FROM user_health WHERE username=? AND date BETWEEN ? AND ?",(username,start_date,end_date))
+    total_sleep = curr.fetchone()
+    curr.execute("SELECT COUNT(sleep_hours) FROM user_health WHERE username=? AND date BETWEEN ? AND ?",(username,start_date,end_date))
+    records = curr.fetchone()
+    if records == 0:
+        return -1
+    return(total_sleep/records)
 def clear_table():
+    """
+    
+    """
     conn = sqlite3.connect("fitness.db")
     curr = conn.cursor()
 
