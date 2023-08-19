@@ -48,5 +48,11 @@ def validate_workout(exercise,sets,reps):
         return -2
     if reps < 0:
         return -3
+    
+def validate_strings(s):
+    """
+    
+    """
+    if len(s) == 0:
+        return False
 
-          
