@@ -21,7 +21,8 @@ def create_table():
 
 def add_fitness(username,date,calories,carbs,protein,fats):
     """
-    
+    function takes 6 parameters username(string) , date(date) , calories(int), carbs(int), protein(int), fats(int) 
+    adds these to table fitness in fitness.db
     """
     conn = sqlite3.connect("fitness.db")
     curr = conn.cursor()
@@ -32,7 +33,8 @@ def add_fitness(username,date,calories,carbs,protein,fats):
 
 def add_health(username,date,weight,sleep_hours):
     """
-
+    function takes 4 parameters username(string) , date(date) , weight(real), sleep_hours(real)
+    adds these to table user_health in fitness.db
     """
     conn = sqlite3.connect("fitness.db")
     curr = conn.cursor()

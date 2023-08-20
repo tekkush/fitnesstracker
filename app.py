@@ -42,12 +42,10 @@ def login(username,password):
     return False
 
 def validate_workout(exercise,sets,reps):
-    if len(exercise) == 0:
-        return -1
-    if sets < 0:
-        return -2
-    if reps < 0:
-        return -3
+    if len(exercise) == 0 or sets<0 or reps<0:
+        return False
+    return True
+       
     
 def validate_strings(s):
     """
@@ -55,4 +53,11 @@ def validate_strings(s):
     """
     if len(s) == 0:
         return False
+
+def add_workout(exercise,sets,reps):
+    while not validate_workout(exercise,sets,reps):
+        print("enter a valid exercise name and sets & reps scheme")
+        exercise = input("exercise name: ")
+
+        
 

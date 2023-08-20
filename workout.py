@@ -20,6 +20,9 @@ def create_table():
 
 
 def add_record(username,date,exercise,sets,reps):
+    """
+    
+    """
     conn = sqlite3.connect("workout.db")
     curr = conn.cursor()
 
@@ -28,6 +31,9 @@ def add_record(username,date,exercise,sets,reps):
     conn.close()
 
 def return_workout(username,date):
+    """
+    
+    """
     conn = sqlite3.connect("workout.db")
     curr = conn.cursor()
 
@@ -36,6 +42,9 @@ def return_workout(username,date):
     return result
 
 def delete_workout(username,date,exercise):
+    """
+    
+    """
     conn = sqlite3.connect("workout.db")
     curr = conn.cursor()
 
@@ -44,15 +53,32 @@ def delete_workout(username,date,exercise):
     conn.close()
 
 def update_workout(username,date,exercise,sets,reps):
+    """
+    
+    """
     delete_workout(username,date,exercise)
     add_record(username,exercise,sets,reps)
 
 def show_all():
+    """
+    
+    """
     conn = sqlite3.connect("workout.db")
     curr = conn.cursor()
     curr.execute("SELECT * FROM workouts")
     records = curr.fetchall()
     for record in records:
         print(records)
+    conn.commit()
+    conn.close()
+
+def clear_table():
+    """
+    
+    """
+    conn = sqlite3.connect("workout.db")
+    curr = conn.cursor()
+
+    curr.execute("DELETE FROM workouts")
     conn.commit()
     conn.close()
