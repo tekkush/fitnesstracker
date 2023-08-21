@@ -27,6 +27,8 @@ def validate_pass(password):
     return True
 
 def register(username,password):
+    while len(username) == 0:
+        username = input("enter a non-empty username: ")
     while database.username_exists(username):
         print(f"username: {username} already taken")
         username = input("please type in another username: ")
@@ -52,7 +54,9 @@ def validate_workout(exercise,sets,reps):
         print("please use only integer/whole number inputs for reps and sets")
         return False
     return True
-       
+
+def validate_fitness(date,calories,carbs,protein,fats):
+    pass
     
 def validate_strings(s):
     """
@@ -60,7 +64,16 @@ def validate_strings(s):
     """
     if len(s) == 0:
         return False
-
+def validate_date(day,month):
+    """
+    function takes a day and month for a date and checks if theyre valid 
+    dates are being input frequently so this is added as a seperate function
+    """
+    if day<1 or day>31:
+        return False
+    if month<1 or month>12:
+        return False
+    return True
 def add_workout(exercise,sets,reps):
     """
     function takes the parameters required to add a record in workouts table in workout.db and validates them
