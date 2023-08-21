@@ -1,4 +1,5 @@
 import database
+import workout
 import fitness_db
 import sqlite3
 import hashlib
@@ -44,20 +45,36 @@ def login(username,password):
 def validate_workout(exercise,sets,reps):
     if len(exercise) == 0 or sets<0 or reps<0:
         return False
+    try:
+        sets = int(input("enter number of sets for this exercise: "))
+        reps = int(input("enter number of reps for this exercise: "))
+    except ValueError:
+        print("please use only integer/whole number inputs for reps and sets")
+        return False
     return True
        
     
 def validate_strings(s):
     """
-    
+    the function takes a string and checks if the string is non empty
     """
     if len(s) == 0:
         return False
 
 def add_workout(exercise,sets,reps):
+    """
+    function takes the parameters required to add a record in workouts table in workout.db and validates them
+    """
     while not validate_workout(exercise,sets,reps):
         print("enter a valid exercise name and sets & reps scheme")
         exercise = input("exercise name: ")
+        sets = int(input("enter number of sets for this exercise: "))
+        reps = int(input("enter number of reps for this exercise: "))
+    workout.add_record(exercise,sets,reps)
 
-        
-
+def print_options(options):
+    print(options)
+    option = input("enter an option")
+    while not validate_strings(options):
+        option = input("please enter a valid option included in the list above: ")
+    return option
