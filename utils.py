@@ -55,8 +55,11 @@ def validate_workout(exercise,sets,reps):
         return False
     return True
 
-def validate_fitness(date,calories,carbs,protein,fats):
-    pass
+def validate_fitness(day,month,year,calories,carbs,protein,fats):
+    date = create_date(year,month,day)
+    if date == -1:
+        return False
+    if calories
     
 def validate_strings(s):
     """
@@ -64,16 +67,17 @@ def validate_strings(s):
     """
     if len(s) == 0:
         return False
-def validate_date(day,month):
+def create_date(day,month,year):
     """
-    function takes a day and month for a date and checks if theyre valid 
-    dates are being input frequently so this is added as a seperate function
+    function takes the day,month and year for a particular date 
+    if the date is invalid -1 is returned
     """
-    if day<1 or day>31:
-        return False
-    if month<1 or month>12:
-        return False
-    return True
+    try:
+        date = datetime.date(year,month,day)
+    except ValueError:
+        return -1
+    return date
+
 def add_workout(exercise,sets,reps):
     """
     function takes the parameters required to add a record in workouts table in workout.db and validates them
