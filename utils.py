@@ -47,19 +47,11 @@ def login(username,password):
 def validate_workout(exercise,sets,reps):
     if len(exercise) == 0 or sets<0 or reps<0:
         return False
-    try:
-        sets = int(input("enter number of sets for this exercise: "))
-        reps = int(input("enter number of reps for this exercise: "))
-    except ValueError:
-        print("please use only integer/whole number inputs for reps and sets")
-        return False
     return True
 
-def validate_fitness(day,month,year,calories,carbs,protein,fats):
-    date = create_date(year,month,day)
-    if date == -1:
+def validate_fitness(calories,carbs,protein,fats):
+    if calories<0 or carbs<0 or protein<0 or fats<0:
         return False
-    if calories
     
 def validate_strings(s):
     """
@@ -67,27 +59,43 @@ def validate_strings(s):
     """
     if len(s) == 0:
         return False
-def create_date(day,month,year):
+
+def add_fitness(username,day,month,year,calories,carbs,protein,fats):
     """
-    function takes the day,month and year for a particular date 
-    if the date is invalid -1 is returned
+    function takes the username , date information and fitness information and tries to add the information to fitness table in fitness_db. 
+    function returns true if adding is successful and false if not
+    a date object is made if the date object is invalid then False is returned
+    if the fitness information is invalid i.e. a number less than zero then False is returned 
     """
     try:
         date = datetime.date(year,month,day)
+        if not validate_fitness(calories,protein,fats):
+            return False
+        fitness_db.add_fitness(username,date,calories,carbs,protein,fats)
+        return True
     except ValueError:
-        return -1
-    return date
+        print("incorrect date type")
+        return False
+    
 
-def add_workout(exercise,sets,reps):
+
+def add_workout(username,date,exercise,sets,reps):
     """
     function takes the parameters required to add a record in workouts table in workout.db and validates them
+    returns a boolean variable success depending on if adding the new record was successful or not depending on correct user input data type
     """
+    success = True 
     while not validate_workout(exercise,sets,reps):
         print("enter a valid exercise name and sets & reps scheme")
         exercise = input("exercise name: ")
-        sets = int(input("enter number of sets for this exercise: "))
-        reps = int(input("enter number of reps for this exercise: "))
-    workout.add_record(exercise,sets,reps)
+        try:
+            sets = int(input("enter number of sets for this exercise: "))
+            reps = int(input("enter number of reps for this exercise: "))
+        except ValueError:
+            success = False
+            return success
+    workout.add_record(username,date,exercise,sets,reps)
+    return success
 
 def print_options(options):
     print(options)
